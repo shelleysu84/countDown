@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Count Down</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		body{
+			text-align: center;
+  			font-family: sans-serif;
+  			font-weight: 100;
+		}
+
+		h1{
+			font-weight: 100;
+			font-size: 40px;
+			margin: 40px 0px 20px;
+		}
+
+		#clockdiv{
+			font-family: sans-serif;
+			color: #fff;
+			display: inline-block;
+			font-weight: 100;
+			font-size: 90px;
+		}
+
+		#clockdiv > div{
+			padding: 10px;
+			display: inline-block;
+		}
+
+		#clockdiv div > span{
+			padding: 15px;
+			color: #000;
+			font-weight: 600;
+			display: inline-block;
+		}
+
+		.smalltext{
+			padding-top: 5px;
+			font-size: 20px;
+			color: #000;
+		}
+
+		#clockdiv .seconds, #clockdiv .red {
+    		color: #f51212;
+		}
+
+		#clockdiv .delimiter {
+			color: #000;
+			display: inline-block;
+			position: relative;
+			left: 0px;
+			top: -80px;
+			margin-left: inherit;
+    		margin-right: inherit;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<h1>COUNTDOWN</h1>
+		<div id="clockdiv" class="row">
+			<div>
+		    	<span class="days"></span>
+		    	<div class="smalltext">DAYS</div>
+		  	</div>
+		  	<div class="delimiter hidden-xs hidden-sm">:</div>
+		  	<div>
+			    <span class="hours"></span>
+			    <div class="smalltext">HOURS</div>
+		  	</div>
+		  	<div class="delimiter hidden-xs hidden-sm">:</div>
+		  	<div>
+		    	<span class="minutes"></span>
+		    	<div class="smalltext">MINITES</div>
+		  	</div>
+		  	<div class="delimiter hidden-xs hidden-sm">:</div>
+		  	<div>
+		    	<span class="seconds"></span>
+		    	<div class="smalltext red">SECONDS</div>
+		  	</div>
+		</div>
+	</div>
+
+	<footer>
+		<script>
+
+			function calcTimeRemaining(endtime) {
+				var t = Date.parse(endtime) - Date.parse(new Date());
+				var seconds = Math.floor((t / 1000) % 60);
+				var minutes = Math.floor((t / 1000 / 60) % 60);
+				var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+				var days = Math.floor(t / (1000 * 60 * 60 * 24));
+				return {
+					'total': t,
+					'days': days,
+					'hours': hours,
+					'minutes': minutes,
+					'seconds': seconds
+				};
+			}
+
+			function initializeClock(endtime) {
+				var daysSpan = $('#clockdiv .days');
+				var hoursSpan = $('#clockdiv .hours');
+				var minutesSpan = $('#clockdiv .minutes');
+				var secondsSpan = $('#clockdiv .seconds');
+
+			  	function updateClock() {
+			    	var t = calcTimeRemaining(endtime);
+
+			    	daysSpan.text(t.days);
+			    	hoursSpan.text(('0' + t.hours).slice(-2));
+			    	minutesSpan.text(('0' + t.minutes).slice(-2));
+			    	secondsSpan.text(('0' + t.seconds).slice(-2));
+
+				    if (t.total == 0) {
+				      	clearInterval(timeinterval);
+				      	alert("Happy New Year!")
+				    } else if (t.total < 0) {
+				      	clearInterval(timeinterval);
+				      	daysSpan.text('0');
+				      	hoursSpan.text('00');
+				      	minutesSpan.text('00');
+				      	secondsSpan.text('00');
+				    }
+			  	}
+
+			  	updateClock();
+			  	var timeinterval = setInterval(updateClock, 1000);
+			}
+
+			var deadline = new Date(new Date().getFullYear(), 12, 1); // new year
+
+			$(document).ready(function() {
+	  			initializeClock(deadline);
+			});
+		
+		</script>
+	</footer>
+
+</body>
+</html>
